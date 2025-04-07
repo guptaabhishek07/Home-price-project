@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predict Home Price</title>
+</head>
+<body>
+  <h2>Predict Home Price Index</h2>
+  <form id="predict-form">
+    <input type="number" name="interest_rate" placeholder="Interest Rate (%)" required>
+    <input type="number" name="mortgage_rate" placeholder="Mortgage Rate (%)" required>
+    <input type="number" name="inflation_cpi" placeholder="Inflation CPI" required>
+    <input type="number" name="unemployment" placeholder="Unemployment Rate" required>
+    <input type="number" name="housing_starts" placeholder="Housing Starts" required>
+    <button type="submit">Predict</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("predict-form").onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        interest_rate: parseFloat(form.interest_rate.value),
+        mortgage_rate: parseFloat(form.mortgage_rate.value),
+        inflation_cpi: parseFloat(form.inflation_cpi.value),
+        unemployment: parseFloat(form.unemployment.value),
+        housing_starts: parseFloat(form.housing_starts.value)
+      };
+
+      const res = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      document.getElementById("result").innerText =
+        "Predicted Home Price Index: " + result.predicted_home_price_index.toFixed(2);
+    };
+  </script>
+</body>
+</html>

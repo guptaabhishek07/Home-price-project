@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home Price Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h2 { margin-top: 40px; }
+    canvas { margin-bottom: 40px; background: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h1>US Home Prices Dashboard</h1>
+
+  <h2>1. Median Income vs Home Price Index (Bar Chart)</h2>
+  <canvas id="incomeBar" width="600" height="300"></canvas>
+
+  <h2>2. Economic Factor Correlation Matrix (Heatmap)</h2>
+  <div id="heatmap" style="width:600px;height:400px;"></div>
+
+  <h2>3. Feature Importance in Model (Pie Chart)</h2>
+  <canvas id="factorPie" width="400" height="400"></canvas>
+
+  <h2>4. Population Growth vs Home Price Index (Line Chart)</h2>
+  <canvas id="popTrend" width="600" height="300"></canvas>
+
+  <h2>5. Economic Indicators Snapshot (Radar Chart)</h2>
+  <canvas id="radarChart" width="600" height="300"></canvas>
+
+  <h2>6. Supply vs Cost vs Price Index (Bubble Chart)</h2>
+  <canvas id="bubbleChart" width="600" height="300"></canvas>
+
+  <script>
+    // Bar Chart
+    new Chart(document.getElementById("incomeBar"), {
+      type: "bar",
+      data: {
+        labels: ["2005", "2010", "2015", "2020", "2025"],
+        datasets: [
+          {
+            label: "Median Income (in $1000s)",
+            data: [45, 48, 52, 60, 70],
+            backgroundColor: "rgba(75, 192, 192, 0.6)"
+          },
+          {
+            label: "Home Price Index",
+            data: [180, 190, 210, 230, 250],
+            backgroundColor: "rgba(153, 102, 255, 0.6)"
+          }
+        ]
+      }
+    });
+
+    // Heatmap
+    const labels = ["Interest", "Mortgage", "CPI", "Unemployment", "Income", "Pop Growth", "Supply", "Cost", "HPI"];
+    const zData = [
+      [1.0, 0.7, 0.6, -0.5, 0.5, 0.4, -0.6, 0.3, 0.8],
+      [0.7, 1.0, 0.65, -0.45, 0.55, 0.5, -0.55, 0.35, 0.75],
+      [0.6, 0.65, 1.0, -0.4, 0.6, 0.45, -0.5, 0.4, 0.7],
+      [-0.5, -0.45, -0.4, 1.0, -0.6, -0.5, 0.6, -0.3, -0.7],
+      [0.5, 0.55, 0.6, -0.6, 1.0, 0.6, -0.4, 0.5, 0.65],
+      [0.4, 0.5, 0.45, -0.5, 0.6, 1.0, -0.3, 0.4, 0.6],
+      [-0.6, -0.55, -0.5, 0.6, -0.4, -0.3, 1.0, -0.4, -0.65],
+      [0.3, 0.35, 0.4, -0.3, 0.5, 0.4, -0.4, 1.0, 0.45],
+      [0.8, 0.75, 0.7, -0.7, 0.65, 0.6, -0.65, 0.45, 1.0]
+    ];
+    Plotly.newPlot("heatmap", [{ z: zData, x: labels, y: labels, type: "heatmap", colorscale: "Blues" }]);
+
+    // Pie Chart
+    new Chart(document.getElementById("factorPie"), {
+      type: "pie",
+      data: {
+        labels: ["Interest Rate", "Mortgage Rate", "CPI", "Unemployment", "Housing Starts"],
+        datasets: [{
+          label: "Feature Contribution",
+          data: [20, 25, 15, 10, 30],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)"
+          ]
+        }]
+      }
+    });
+
+    // Line Chart
+    new Chart(document.getElementById("popTrend"), {
+      type: "line",
+      data: {
+        labels: ["2005", "2010", "2015", "2020", "2025"],
+        datasets: [
+          {
+            label: "Population Growth (%)",
+            data: [1.2, 1.1, 1.0, 0.9, 0.8],
+            borderColor: "rgba(255, 159, 64, 1)",
+            borderWidth: 2,
+            fill: false
+          },
+          {
+            label: "Home Price Index",
+            data: [180, 190, 210, 230, 250],
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 2,
+            fill: false
+          }
+        ]
+      }
+    });
+
+    // Radar Chart
+    new Chart(document.getElementById("radarChart"), {
+      type: "radar",
+      data: {
+        labels: ["Interest Rate", "Mortgage Rate", "CPI", "Unemployment", "Construction Cost"],
+        datasets: [{
+          label: "2025 Projection",
+          data: [4.5, 6.0, 3.2, 5.0, 110],
+          backgroundColor: "rgba(153, 102, 255, 0.2)",
+          borderColor: "rgba(153, 102, 255, 1)",
+          borderWidth: 1
+        }]
+      }
+    });
+
+    // Bubble Chart
+    new Chart(document.getElementById("bubbleChart"), {
+      type: "bubble",
+      data: {
+        datasets: [{
+          label: "Housing Trends",
+          data: [
+            {x: 1500, y: 180, r: 5},
+            {x: 1600, y: 190, r: 6},
+            {x: 1700, y: 210, r: 8},
+            {x: 1800, y: 230, r: 10},
+            {x: 1900, y: 250, r: 12}
+          ],
+          backgroundColor: "rgba(255, 206, 86, 0.6)"
+        }]
+      },
+      options: {
+        scales: {
+          x: { title: { display: true, text: "Housing Supply (New Units)" }},
+          y: { title: { display: true, text: "Home Price Index" }}
+        }
+      }
+    });
+  </script>
+</body>
+</html>
