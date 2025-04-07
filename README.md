@@ -15,7 +15,7 @@ A Flask-based web application that predicts US home prices using machine learnin
   - Correlation Plot
   - Factor Trend Analysis
 - 🧠 Trained ML Model using Scikit-learn
-- 🌐 Deployed via Render / Railway / Cyclic
+- 🌐 Deployed via Render 
 
 ---
 
