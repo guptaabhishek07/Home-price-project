@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 import joblib
+import os
+
 
 app = Flask(__name__, template_folder="../templates")  
 
-model = joblib.load("/Users/gupta_004/LLC HOME/model.pkl")
+model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+model = joblib.load(model_path)
 
 @app.route("/")
 def home():
